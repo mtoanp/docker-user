@@ -1,0 +1,20 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app  # Bind Mount pour tenez au courant le conteneur avec les changements local
+      - /app/node_modules  # Named Mount pour ne pas toucher les node_modules de conteneur
+    environment:
+      NODE_ENV: development
+  
+  frontend-react:
+    build: ./frontend-react
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./frontend-react:/app  # Bind Mount pour tenez au courant le conteneur avec les changements local
+      - /app/node_modules  # Named Mount pour ne pas toucher les node_modules de conteneur
+    depends_on:
+      - backend
