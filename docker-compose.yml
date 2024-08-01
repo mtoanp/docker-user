@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+    environment:
+      NODE_ENV: development
+
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - backend
+
+
+# CMD
+  # docker-compose up
+  # docker-compose up -d  > lancer les conteneurs de votre application en arrière-plan (en mode détaché).
+  # docker-compose logs
+  # docker-compose down
