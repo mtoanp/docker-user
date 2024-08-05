@@ -6,5 +6,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5000,
+    host: true, // Allows access from outside docker network
   },
 });
