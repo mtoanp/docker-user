@@ -1,20 +1,46 @@
 services:
+  database:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - ${MYSQL_HOST_PORT}:${MYSQL_PORT}
+    volumes:
+      - ${MOUNT_VOLUME}:/var/lib/mysql
+    healthcheck:
+      test: mysql -h 127.0.0.1 -u ${MYSQL_USER} -p${MYSQL_PASSWORD} -e "SELECT 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   backend:
     build: ./backend
     ports:
-      - "3000:3000"
+      - ${APP_HOST_PORT}:${APP_PORT}
     volumes:
       - ./backend:/app  # Bind Mount pour tenez au courant le conteneur avec les changements local
       - /app/node_modules  # Named Mount pour ne pas toucher les node_modules de conteneur
     environment:
-      NODE_ENV: development
+      NODE_ENV: ${NODE_ENV}
+    env_file:
+      - .env # Specify this so it is available within the container
+    depends_on:
+      database:
+        condition: service_healthy
   
   frontend-react:
     build: ./frontend-react
     ports:
-      - "5000:5000"
+      - ${REACT_APP_HOST_PORT}:${REACT_APP_PORT}
     volumes:
       - ./frontend-react:/app  # Bind Mount pour tenez au courant le conteneur avec les changements local
       - /app/node_modules  # Named Mount pour ne pas toucher les node_modules de conteneur
     depends_on:
       - backend
+    env_file:
+      - .env # Specify this so it is available within the container

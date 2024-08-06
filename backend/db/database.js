@@ -1,15 +1,16 @@
-require("dotenv").config();
+// Load environment variables from project root
+require("dotenv").config({ path: __dirname+'/../../.env' });
 
 // Get the client
 const mysql = require("mysql2/promise");
 
 // Create the connection to database
 const database = mysql.createPool({
-  host: process.env.DB_HOST, // address of the server
-  port: process.env.DB_PORT, // port of the DB server (mysql), not to be confused with the APP_PORT !
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  host: process.env.MYSQL_HOST, // Service name of DB in docker-compose
+  port: process.env.MYSQL_PORT, // Port inside the container NOT HOST PORT for ACCESS.
+  database: process.env.MYSQL_DATABASE,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
 });
 
 database
