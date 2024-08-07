@@ -12,9 +12,9 @@ const userController = require("../controllers/UserController"); // instantiate
 // } = require("../middlewares/authJWT");
 
 users.get("/", userController.findAll);
-// users.get("/:uuid", auth, isRightUserOrAdmin, userController.findOne);
-// users.post("/", auth, isAdmin, userController.create);
-// users.put("/:uuid", auth, isAdmin, userController.update);
-// users.delete("/:uuid", auth, isAdmin, userController.delete);
+users.get("/:uuid", userController.findByUuid);
+users.post("/", userController.create);
+users.put("/:uuid", userController.update);
+users.delete("/:uuid", userController.deleteByUuid);
 
 module.exports = users;
