@@ -2,9 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const logger = require("morgan");
 
-const database = require("../db/database");
+// const database = require("../db/database");
 
-// const errorMiddleware = require("./middlewares/errorMiddleware");
+const errorMiddleware = require("./middlewares/errorMiddleware");
 
 const corsOptions = {
   // origin: [process.env.FRONTEND_URL, "http://localhost:5000"],
@@ -26,6 +26,6 @@ app.use("/api", api); // Use the routes defined in the root file with the /api p
 app.use("/api/users", users);
 
 // Set up error-handling middleware
-// app.use(errorMiddleware);
+app.use(errorMiddleware);
 	
 module.exports = app;
