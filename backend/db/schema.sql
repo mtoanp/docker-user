@@ -1,7 +1,4 @@
-USE docker_user;
-DROP TABLE users;
-DELETE FROM users WHERE email = 'user@yahoo.com';
-SELECT * FROM users;
+-- CREATE USER TABLE
 CREATE TABLE IF NOT EXISTS `users` (
     `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
     `name` varchar(255) DEFAULT NULL,
@@ -14,3 +11,9 @@ CREATE TABLE IF NOT EXISTS `users` (
     PRIMARY KEY (`uuid`),
     UNIQUE KEY `email` (`email`)
 );
+
+
+-- USE docker_user;
+-- DROP TABLE users;
+-- DELETE FROM users WHERE email = 'user@yahoo.com';
+-- SELECT * FROM users;
