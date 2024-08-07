@@ -1,5 +1,5 @@
 const app = require("./src/app");
-require("dotenv").config();
+require("dotenv").config({ path: "../.env" });
 const port = process.env.APP_PORT || 3000;
 
 // Listen for server events
