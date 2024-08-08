@@ -29,7 +29,7 @@ services:
       - ${MONGO_HOST_PORT}:${MONGO_PORT}
     volumes:
       - ${MONGO_VOLUME}:/data/db
-      - ~/Dev/docker/configs/docker-user/mongo/init-db.js:/docker-entrypoint-initdb.d/init-db.js
+      - ./backend/db/mongo-docker-initdb.js:/docker-entrypoint-initdb.d/init-db.js
 
   backend:
     build: ./backend
