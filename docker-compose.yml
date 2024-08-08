@@ -1,5 +1,5 @@
 services:
-  database:
+  db-mysql:
     image: mysql
     restart: always
     environment:
@@ -11,12 +11,25 @@ services:
     ports:
       - ${MYSQL_HOST_PORT}:${MYSQL_PORT}
     volumes:
-      - ${MOUNT_VOLUME}:/var/lib/mysql
+      - ${MYSQL_VOLUME}:/var/lib/mysql
     healthcheck:
       test: mysql -h 127.0.0.1 -u ${MYSQL_USER} -p${MYSQL_PASSWORD} -e "SELECT 1"
       interval: 10s
       timeout: 5s
       retries: 5
+
+  db-mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ADMIN}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ADMIN_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+    ports:
+      - ${MONGO_HOST_PORT}:${MONGO_PORT}
+    volumes:
+      - ${MONGO_VOLUME}:/data/db
+      - ~/Dev/docker/configs/docker-user/mongo/init-db.js:/docker-entrypoint-initdb.d/init-db.js
 
   backend:
     build: ./backend
@@ -27,10 +40,11 @@ services:
       - /app/node_modules  # Named Mount pour ne pas toucher les node_modules de conteneur
     environment:
       NODE_ENV: ${NODE_ENV}
+      MONGODB_URI: ${MONGODB_URI}
     env_file:
       - .env # Specify this so it is available within the container
     depends_on:
-      database:
+      db-mysql:
         condition: service_healthy
   
   frontend-react:
