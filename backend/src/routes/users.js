@@ -3,7 +3,12 @@
 
 const express = require("express");
 const users = express.Router();
-const userController = require("../controllers/UserController"); // instantiate
+
+let userController;
+if (process.env.DATATYPE === "mongodb")
+  userController = require("../controllers/UserControllerMongo"); // instantiate
+else userController = require("../controllers/UserController"); // instantiate
+
 // const {
 //   auth,
 //   isAdmin,

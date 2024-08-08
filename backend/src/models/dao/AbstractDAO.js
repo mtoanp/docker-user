@@ -1,4 +1,4 @@
-const database = require("../../../db/database");
+const database = require("../../../db/mysql");
 
 class AbstractDAO {
   constructor({ table }) {

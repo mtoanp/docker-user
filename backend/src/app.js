@@ -2,7 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const logger = require("morgan");
 
-// const database = require("../db/database");
+require("dotenv").config({ path: __dirname+'/../../.env' });
+if (process.env.DATATYPE === "mongodb") {
+  const mongoose = require("../db/mongodb");
+}
+
 
 const errorMiddleware = require("./middlewares/errorMiddleware");
 

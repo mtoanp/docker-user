@@ -16,4 +16,4 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- USE docker_user;
 -- DROP TABLE users;
 -- DELETE FROM users WHERE email = 'user@yahoo.com';
--- SELECT * FROM users;
+SELECT * FROM users;
