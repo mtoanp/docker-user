@@ -1,6 +1,12 @@
 // init-mongo/init.js
-db = db.getSiblingDB('docker_user');  // Replace 'mydatabase' with your desired database name
+db = db.getSiblingDB('docker_user');
 
-// Create the database if it does not exist
-db.createCollection('users');  // Replace 'mycollection' with your desired collection name
+// Create User with DB Access
+db.createUser({
+  user: 'dbUser',
+  pwd: 'dbpassword',
+  roles: [{ role: 'readWrite', db: 'docker_user' }]
+})
+
+print("User created")
 
