@@ -1,25 +1,26 @@
 services:
-  db-mysql:
-    image: mysql
-    restart: always
-    environment:
-      MYSQL_HOST: ${MYSQL_HOST}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    ports:
-      - ${MYSQL_HOST_PORT}:${MYSQL_PORT}
-    volumes:
-      - ${MYSQL_VOLUME}:/var/lib/mysql
-    healthcheck:
-      test: mysql -h 127.0.0.1 -u ${MYSQL_USER} -p${MYSQL_PASSWORD} -e "SELECT 1"
-      interval: 10s
-      timeout: 5s
-      retries: 5
+  # db-mysql:
+  #   image: mysql
+  #   restart: always
+  #   environment:
+  #     MYSQL_HOST: ${MYSQL_HOST}
+  #     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+  #     MYSQL_DATABASE: ${MYSQL_DATABASE}
+  #     MYSQL_USER: ${MYSQL_USER}
+  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+  #   ports:
+  #     - ${MYSQL_HOST_PORT}:${MYSQL_PORT}
+  #   volumes:
+  #     - ${MYSQL_VOLUME}:/var/lib/mysql
+  #   healthcheck:
+  #     test: mysql -h 127.0.0.1 -u ${MYSQL_USER} -p${MYSQL_PASSWORD} -e "SELECT 1"
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
 
   db-mongo:
-    image: mongo
+    image: mongo:latest
+    container_name: mongodb
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ADMIN}
@@ -28,35 +29,35 @@ services:
     env_file:
       - .env
     ports:
-      - ${MONGODB_HOST_PORT}:${MONGODB_PORT}
+      - "27018:27017" # Map host port 27018 to container port 27017
     volumes:
       - ${MONGODB_VOLUME}:/data/db
-      - ./backend/db/mongo-docker-initdb.sh:/docker-entrypoint-initdb.d/mongo-docker-initdb.sh
+      - ./backend/db/mongo-docker-initdb.js:/docker-entrypoint-initdb.d/mongo-docker-initdb.js
 
-  backend:
-    build: ./backend
-    ports:
-      - ${APP_HOST_PORT}:${APP_PORT}
-    volumes:
-      - ./backend:/app  # Bind Mount pour tenez au courant le conteneur avec les changements local
-      - /app/node_modules  # Named Mount pour ne pas toucher les node_modules de conteneur
-    environment:
-      NODE_ENV: ${NODE_ENV}
-      MONGODB_URI: ${MONGODB_URI}
-    env_file:
-      - .env # Specify this so it is available within the container
-    depends_on:
-      db-mysql:
-        condition: service_healthy
+  # backend:
+  #   build: ./backend
+  #   ports:
+  #     - ${APP_HOST_PORT}:${APP_PORT}
+  #   volumes:
+  #     - ./backend:/app  # Bind Mount pour tenez au courant le conteneur avec les changements local
+  #     - /app/node_modules  # Named Mount pour ne pas toucher les node_modules de conteneur
+  #   environment:
+  #     NODE_ENV: ${NODE_ENV}
+  #     MONGODB_URI: ${MONGODB_URI}
+  #   env_file:
+  #     - .env # Specify this so it is available within the container
+  #   depends_on:
+  #     db-mysql:
+  #       condition: service_healthy
   
-  frontend-react:
-    build: ./frontend-react
-    ports:
-      - ${REACT_APP_HOST_PORT}:${REACT_APP_PORT}
-    volumes:
-      - ./frontend-react:/app  # Bind Mount pour tenez au courant le conteneur avec les changements local
-      - /app/node_modules  # Named Mount pour ne pas toucher les node_modules de conteneur
-    depends_on:
-      - backend
-    env_file:
-      - .env # Specify this so it is available within the container
+  # frontend-react:
+  #   build: ./frontend-react
+  #   ports:
+  #     - ${REACT_APP_HOST_PORT}:${REACT_APP_PORT}
+  #   volumes:
+  #     - ./frontend-react:/app  # Bind Mount pour tenez au courant le conteneur avec les changements local
+  #     - /app/node_modules  # Named Mount pour ne pas toucher les node_modules de conteneur
+  #   depends_on:
+  #     - backend
+  #   env_file:
+  #     - .env # Specify this so it is available within the container
