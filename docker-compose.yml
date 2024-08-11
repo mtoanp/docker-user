@@ -10,7 +10,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - ${MYSQL_PORT}:${MYSQL_HOST_PORT}
+      - ${DOCKER_MYSQL_HOST_PORT}:${MYSQL_PORT}  # <host_port>:<container_port> "3307:3306"  Map host port 3306 to container port 3307
     volumes:
       - ${MYSQL_VOLUME}:/var/lib/mysql
     healthcheck:
@@ -30,44 +30,45 @@ services:
     env_file:
       - .env
     ports:
-      - ${MONGODB_PORT}:${MONGODB_HOST_PORT} # "27018:27017"  Map host port 27018 to container port 27017
+      - ${DOCKER_MONGODB_HOST_PORT}:${MONGODB_PORT} # <host_port>:<container_port> "27018:27017"  Map host port 27017 to container port 27018
     volumes:
       - ${MONGODB_VOLUME}:/data/db
       - ./backend/db/mongo-docker-initdb.js:/docker-entrypoint-initdb.d/mongo-docker-initdb.js
       # - ./backend/db/mongo-docker-initdb.sh:/docker-entrypoint-initdb.d/mongo-docker-initdb.sh
     healthcheck:
       test: mongosh --eval 'db.runCommand("ping").ok' --quiet
-      # test: mongosh --host 127.0.0.1 --username mtoan --password secret --eval 'db.adminCommand(\"ping\")'
       interval: 10s
       timeout: 5s
       retries: 5
 
   backend:
+    # image: node
+    container_name: node
     build: ./backend
     ports:
-      - ${APP_HOST_PORT}:${APP_PORT}
+      - ${DOCKER_NODE_APP_HOST_PORT}:${NODE_APP_PORT}  # <host_port>:<container_port> "3000:3000"  Map host port 3000 to container port 3001
     volumes:
       - ./backend:/app  # Bind Mount pour tenez au courant le conteneur avec les changements local
       - /app/node_modules  # Named Mount pour ne pas toucher les node_modules de conteneur
     environment:
       NODE_ENV: ${NODE_ENV}
-      MONGODB_URI: ${MONGODB_URI}
+      # MONGODB_URI: ${MONGODB_URI}
     env_file:
       - .env # Specify this so it is available within the container
     depends_on:
-      # db-mysql:
-      #   condition: service_healthy
+      db-mysql:
+        condition: service_healthy
       db-mongo:
         condition: service_healthy
   
-  frontend-react:
-    build: ./frontend-react
-    ports:
-      - ${REACT_APP_HOST_PORT}:${REACT_APP_PORT}
-    volumes:
-      - ./frontend-react:/app  # Bind Mount pour tenez au courant le conteneur avec les changements local
-      - /app/node_modules  # Named Mount pour ne pas toucher les node_modules de conteneur
-    depends_on:
-      - backend
-    env_file:
-      - .env # Specify this so it is available within the container
+  # frontend-react:
+  #   build: ./frontend-react
+  #   ports:
+  #     - ${DOCKER_REACT_APP_HOST_PORT}:${REACT_APP_PORT}
+  #   volumes:
+  #     - ./frontend-react:/app  # Bind Mount pour tenez au courant le conteneur avec les changements local
+  #     - /app/node_modules  # Named Mount pour ne pas toucher les node_modules de conteneur
+  #   depends_on:
+  #     - backend
+  #   env_file:
+  #     - .env # Specify this so it is available within the container
