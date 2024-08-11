@@ -1,8 +1,11 @@
-// Load environment variables from project root
-require("dotenv").config({ path: __dirname+'/../../.env' });
-
 // Get the client
 const mysql = require("mysql2/promise");
+
+// Construct the dynamic URI for MongoDB
+const MYSQL_PORT = process.env.PLAFORM === 'docker' ? process.env.MYSQL_PORT : process.env.MYSQL_HOST_PORT;
+const Platforminfo = process.env.PLATFORM === 'docker' 
+    ? `via: docker - ${MYSQL_PORT}` 
+    : `via: local - ${MYSQL_PORT}`;
 
 // Create the connection to database
 const database = mysql.createPool({
@@ -16,7 +19,7 @@ const database = mysql.createPool({
 database
   .getConnection()
   .then(() => {
-    console.log("MySQL Database connected !");
+    console.log("MySQL Database connected !", Platforminfo);
   })
   .catch((err) => {
     console.error(err);
