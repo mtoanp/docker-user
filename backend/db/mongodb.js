@@ -4,11 +4,11 @@ const mongoose = require('mongoose');
 // Construct the dynamic URI for MongoDB
 const MONGODB_USER = process.env.MONGODB_USER;
 const MONGODB_USER_PASSWORD = process.env.MONGODB_USER_PASSWORD;
-const MONGODB_PORT = process.env.PLAFORM === 'docker' ? process.env.MONGODB_PORT : process.env.MONGODB_HOST_PORT;
-const MONGODB_URI = `mongodb://${MONGODB_USER}:${MONGODB_USER_PASSWORD}@localhost:${MONGODB_PORT}/docker_user`;
+const MONGODB_HOST = process.env.PLATFORM === 'docker' ? "db-mongo" : process.env.MONGODB_HOST;
+const MONGODB_URI = `mongodb://${MONGODB_USER}:${MONGODB_USER_PASSWORD}@${MONGODB_HOST}:${process.env.MONGODB_PORT}/docker_user`;
 const Platforminfo = process.env.PLATFORM === 'docker' 
-    ? `via: docker - ${MONGODB_PORT}` 
-    : `via: local - ${MONGODB_PORT}`;
+    ? `> docker > host: ${MONGODB_HOST} > host-port: ${process.env.DOCKER_MONGODB_HOST_PORT}` 
+    : `> local  > host: ${MONGODB_HOST} > host-port: ${process.env.MONGODB_PORT}`;
 
 // Connect to the MongoDB database
 const connectToDatabase = async () => {
