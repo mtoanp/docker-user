@@ -1,36 +1,28 @@
 import React from "react";
-import { Slot, Stack, Link } from "expo-router";
-import { View, Text } from "react-native";
-import NavBar from "./NavBar";
+import { Slot, Tabs, Stack, Link } from "expo-router";
+import { View, Text, SafeAreaView, StatusBar } from "react-native";
+// import { StatusBar } from "expo-status-bar";
+import { NavBar, Header, Footer } from "../components";
 
 const RootLayout = () => {
   return (
     <>
-      {/* Footer */}
-      <View className="h-10 w-full bg-slate-100 justify-center items-center">
-        <Text>Header</Text>
-      </View>
+      <SafeAreaView className="flex-1 bg-white">
+        {/* <StatusBar /> */}
 
-      {/* Screens */}
-      <Slot />
+        {/* Header */}
+        <View className="h-10 w-full bg-slate-100 justify-center items-center">
+          <Header />
+        </View>
 
-      {/* Footer */}
-      <View className="h-10 w-full bg-slate-100 justify-center items-center">
-        <Text>Footer</Text>
-      </View>
+        {/* NavBar */}
+        <NavBar />
 
-      {/* NavBar */}
-      <NavBar />
-
-      {/* <Stack> */}
-      {/* <Stack.Screen name="index" options={{ headerShown: false }} /> */}
-      {/* <Stack.Screen name="(tabs)" options={{ title: '', headerShown: true }} /> */}
-      {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
-
-      {/* <Stack.Screen name="(tabs)/Home" options={{ headerShown: false }} /> */}
-      {/* <Stack.Screen name="(tabs)/Profile" options={{ headerShown: false }} /> */}
-      {/* <Stack.Screen name="+not-found" /> */}
-      {/* </Stack> */}
+        {/* Footer */}
+        {/* <View className="h-10 w-full bg-slate-100 justify-center items-center">
+          <Footer />
+        </View> */}
+      </SafeAreaView>
     </>
   );
 };
