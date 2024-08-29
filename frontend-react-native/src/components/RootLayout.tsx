@@ -13,7 +13,12 @@ export default function RootLayout({ children }) {
   //   console.log(insets);
 
   return (
-    <SafeAreaView style={[styles.container, { paddingTop: insets.top }]}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { paddingTop: insets.top, paddingBottom: insets.bottom },
+      ]}
+    >
       <Header />
 
       {children}

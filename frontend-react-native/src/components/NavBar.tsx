@@ -1,6 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import Colors from "../styles/colors";
 
 export default function NavBar() {
   const navigation = useNavigation();
@@ -17,10 +18,18 @@ export default function NavBar() {
 
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("Details");
+          navigation.navigate("Profile");
         }}
       >
-        <Text>Details</Text>
+        <Text>Profile</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("AuthStack");
+        }}
+      >
+        <Text>AuthStack</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -40,7 +49,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    backgroundColor: "gray",
-    maxHeight: 60,
+    backgroundColor: Colors.cream,
+    maxHeight: 45,
   },
 });

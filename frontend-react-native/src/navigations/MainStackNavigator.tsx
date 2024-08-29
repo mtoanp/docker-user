@@ -1,25 +1,30 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screens/HomeScreens";
-import DetailsScreen from "../screens/DetailsScreen";
-import SettingsScreen from "../screens/SettingsScreen";
+import Home from "../screens/Home/Home";
+import Profile from "../screens/Profile/Profile";
+import Settings from "../screens/Settings/Settings";
+import AuthStack from "../screens/auth/AuthStack";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 // ------------------------------------------------------------------------------------
-// TabNavigator
+// TabNavigator: Alternative to NavBar
 // ------------------------------------------------------------------------------------
-function TabNavigator() {
+export function TabNavigator() {
   return (
     <Tab.Navigator
+      initialRouteName="Home"
       screenOptions={{
         headerShown: false, // Hide default headers if using a custom header
       }}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Details" component={DetailsScreen} />
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Profile" component={Profile} />
+
+      {/* Nested Route Stack */}
+      <Tab.Screen name="AuthStack" component={AuthStack} />
     </Tab.Navigator>
   );
 }
@@ -29,18 +34,24 @@ function TabNavigator() {
 // ------------------------------------------------------------------------------------
 export default function MainStackNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {/* Using TabBar */}
       <Stack.Screen
         name="TabNavigator"
         component={TabNavigator} // used TabNavigator as a screen
-        options={{ headerShown: false }}
       />
       {/* Screen that declared in TabNavigator, no need to add here */}
 
+      {/* Using Classic NavBar > define routes */}
+      {/* <Stack.Screen name="Home" component={Home} /> */}
+      {/* <Stack.Screen name="Profile" component={Profile} /> */}
+      {/* <Stack.Screen name="AuthStack" component={AuthStack} /> */}
+
+      {/* Common routes */}
       <Stack.Screen
         name="Settings"
-        component={SettingsScreen}
-        options={{ headerShown: false }}
+        component={Settings}
+        options={{ headerShown: true }}
       />
     </Stack.Navigator>
   );

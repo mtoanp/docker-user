@@ -3,7 +3,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 // import NavBar from "../components/NavBar";
 
-const HomeScreens = () => {
+const Home = () => {
   const navigation = useNavigation();
 
   return (
@@ -14,7 +14,7 @@ const HomeScreens = () => {
   );
 };
 
-export default HomeScreens;
+export default Home;
 
 const styles = StyleSheet.create({
   HomeContainer: {
