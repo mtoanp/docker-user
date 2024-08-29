@@ -1,7 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Colors from "../styles/colors";
+import Colors from "../styles/Colors";
 
 export default function NavBar() {
   const navigation = useNavigation();
