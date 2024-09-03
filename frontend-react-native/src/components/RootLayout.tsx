@@ -23,8 +23,8 @@ export default function RootLayout({ children }) {
 
       {children}
 
-      <NavBar />
-      <Footer />
+      {/* <NavBar /> */}
+      {/* <Footer /> */}
     </SafeAreaView>
   );
 }

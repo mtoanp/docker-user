@@ -42,11 +42,6 @@ export default function MainStackNavigator() {
       />
       {/* Screen that declared in TabNavigator, no need to add here */}
 
-      {/* Using Classic NavBar > define routes */}
-      {/* <Stack.Screen name="Home" component={Home} /> */}
-      {/* <Stack.Screen name="Profile" component={Profile} /> */}
-      {/* <Stack.Screen name="AuthStack" component={AuthStack} /> */}
-
       {/* Common routes */}
       <Stack.Screen
         name="Settings"
