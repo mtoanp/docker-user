@@ -3,6 +3,6 @@ import { UserList, NewUser, EditUser, UserDetails } from "../pages";
 export const userRoutes = [
   { path: "users", element: <UserList /> },
   { path: "users/new", element: <NewUser /> },
-  { path: "users/:id", element: <UserDetails /> },
-  { path: "users/:id/edit", element: <EditUser /> },
+  { path: "users/:uuid", element: <UserDetails /> },
+  { path: "users/:uuid/edit", element: <EditUser /> },
 ];
